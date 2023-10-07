@@ -20,11 +20,23 @@ vector<unsigned int> getFileBuffer( const string& dir ) { //restituisce un vetto
 int main() {
     vector<unsigned int> buffer = getFileBuffer( "../data/input/invaders.h" );
 
-    int i = 0;
     stringstream instruction;
     int increment;
+
+    stringstream oneByteData;
+    stringstream twoByteData;
+    stringstream twoByteAddress;
+
+    int i = 0;
     while ( i < buffer.size() ) {
         instruction.str(string());
+        oneByteData.str(string());
+        twoByteData.str(string());
+        twoByteAddress.str(string());
+
+        oneByteData << "0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+1];;
+        twoByteData << "0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+        twoByteAddress << "$" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
 
         switch ( buffer[i] ) {
             case 0x00: {
@@ -33,7 +45,7 @@ int main() {
                 break;
             }
             case 0x01: {
-                instruction << "LXI B,$" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "LXI B," << twoByteData.str();
                 increment = 3;
                 break;
             }
@@ -58,7 +70,7 @@ int main() {
                 break;
             }
             case 0x06: {
-                instruction << "MVI B,#0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "MVI B," << oneByteData.str();
                 increment = 2;
                 break;
             }
@@ -98,7 +110,7 @@ int main() {
                 break;
             }
             case 0x0e: {
-                instruction << "MVI C,#0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "MVI C," << oneByteData.str();
                 increment = 2;
                 break;
             }
@@ -113,7 +125,7 @@ int main() {
                 break;
             }
             case 0x11: {
-                instruction << "LXI D,#0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "LXI D," << twoByteData.str();
                 increment = 3;
                 break;
             }
@@ -138,7 +150,7 @@ int main() {
                 break;
             }
             case 0x16: {
-                instruction << "MVI D,#0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "MVI D," << oneByteData.str();
                 increment = 2;
                 break;
             }
@@ -178,7 +190,7 @@ int main() {
                 break;
             }
             case 0x1e: {
-                instruction << "MVI E,#0x" << hex  << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "MVI E," << oneByteData.str();
                 increment = 2;
                 break;
             }
@@ -193,12 +205,12 @@ int main() {
                 break;
             }
             case 0x21: {
-                instruction << "LXI H,#0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "LXI H," << twoByteData.str();
                 increment = 3;
                 break;
             }
             case 0x22: {
-                instruction << "SHLD $" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "SHLD " << twoByteAddress.str();
                 increment = 3;
                 break;
             }
@@ -218,7 +230,7 @@ int main() {
                 break;
             }
             case 0x26: {
-                instruction << "MVI H,#0x" << hex  << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "MVI H," << oneByteData.str();
                 increment = 2;
                 break;
             }
@@ -258,7 +270,7 @@ int main() {
                 break;
             }
             case 0x2e: {
-                instruction << "MVI L,#0x" << hex  << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "MVI L," << oneByteData.str();
                 increment = 2;
                 break;
             }
@@ -273,12 +285,12 @@ int main() {
                 break;
             }
             case 0x31: {
-                instruction << "LXI SP,#0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "LXI SP," << twoByteData.str();
                 increment = 3;
                 break;
             }
             case 0x32: {
-                instruction << "STA $" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "STA " << twoByteAddress.str();
                 increment = 3;
                 break;
             }
@@ -298,7 +310,7 @@ int main() {
                 break;
             }
             case 0x36: {
-                instruction << "MVI M,#0x" << hex  << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "MVI M," << oneByteData.str();
                 increment = 2;
                 break;
             }
@@ -318,7 +330,7 @@ int main() {
                 break;
             }
             case 0x3a: {
-                instruction << "LDA $" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "LDA $" << twoByteAddress.str();
                 increment = 3;
                 break;
             }
@@ -338,7 +350,7 @@ int main() {
                 break;
             }
             case 0x3e: {
-                instruction << "MVI A,#0x" << hex  << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "MVI A," << oneByteData.str();
                 increment = 2;
                 break;
             }
@@ -998,17 +1010,17 @@ int main() {
                 break;
             }
             case 0xc2: {
-                instruction << "JNZ $" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "JNZ " << twoByteAddress.str();
                 increment = 3;
                 break;
             }
             case 0xc3: {
-                instruction << "JMP $" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "JMP " << twoByteAddress.str();
                 increment = 3;
                 break;
             }
             case 0xc4: {
-                instruction << "CNZ $" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "CNZ " << twoByteAddress.str();
                 increment = 3;
                 break;
             }
@@ -1018,7 +1030,7 @@ int main() {
                 break;
             }
             case 0xc6: {
-                instruction << "ADI #0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "ADI " << oneByteData.str();
                 increment = 2;
                 break;
             }
@@ -1038,7 +1050,7 @@ int main() {
                 break;
             }
             case 0xca: {
-                instruction << "JZ $" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "JZ " << twoByteAddress.str();
                 increment = 3;
                 break;
             }
@@ -1048,18 +1060,48 @@ int main() {
                 break;
             }
             case 0xcc: {
-                instruction << "CZ $" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "CZ " << twoByteAddress.str();
                 increment = 3;
                 break;
             }
             case 0xcd: {
-                instruction << "CALL $" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "CALL " << twoByteAddress.str();
                 increment = 3;
                 break;
             }
             case 0xce: {
-                instruction << "ACI #0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+                instruction << "ACI " << oneByteData.str();
                 increment = 2;
+                break;
+            }
+            case 0xcf: {
+                instruction << "RST 1";
+                increment = 1;
+                break;
+            }
+            case 0xd0: {
+                instruction << "RNC";
+                increment = 1;
+                break;
+            }
+            case 0xd1: {
+                instruction << "POP D";
+                increment = 1;
+                break;
+            }
+            case 0xd2: {
+                instruction << "JNC " << twoByteAddress.str();
+                increment = 3;
+                break;
+            }
+            case 0xd3: {
+                instruction << "OUT " << oneByteData.str();
+                increment = 2;
+                break;
+            }
+            case 0xd4: {
+                instruction << "CNC " << twoByteAddress.str();
+                increment = 3;
                 break;
             }
             default: i++;
