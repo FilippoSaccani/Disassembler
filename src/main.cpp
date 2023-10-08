@@ -1,5 +1,5 @@
+#include <iostream>
 #include <bits/stdc++.h>
-#include "tools/tools.h"
 using namespace std;
 
 vector<unsigned int> getFileBuffer( const string& dir ) { //restituisce un vettore di numeri hex presi dal file in posizione <dir>
