@@ -34,8 +34,8 @@ int main() {
         twoByteData.str(string());
         twoByteAddress.str(string());
 
-        oneByteData << "0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+1];;
-        twoByteData << "0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
+        oneByteData << "#0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+1];;
+        twoByteData << "#0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
         twoByteAddress << "$" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
 
         switch ( buffer[i] ) {
@@ -1102,6 +1102,221 @@ int main() {
             case 0xd4: {
                 instruction << "CNC " << twoByteAddress.str();
                 increment = 3;
+                break;
+            }
+            case 0xd5: {
+                instruction << "PUSH D";
+                increment = 1;
+                break;
+            }
+            case 0xd6: {
+                instruction << "SUI " << oneByteData.str();
+                increment = 2;
+                break;
+            }
+            case 0xd7: {
+                instruction << "RST 2";
+                increment = 1;
+                break;
+            }
+            case 0xd8: {
+                instruction << "RC";
+                increment = 1;
+                break;
+            }
+            case 0xd9: {
+                instruction << "-";
+                increment = 1;
+                break;
+            }
+            case 0xda: {
+                instruction << "JC " << twoByteAddress.str();
+                increment = 3;
+                break;
+            }
+            case 0xdb: {
+                instruction << "IN " << oneByteData.str();
+                increment = 2;
+                break;
+            }
+            case 0xdc: {
+                instruction << "CC " << twoByteAddress.str();
+                increment = 3;
+                break;
+            }
+            case 0xdd: {
+                instruction << "-";
+                increment = 1;
+                break;
+            }
+            case 0xde: {
+                instruction << "SBI " << oneByteData.str();
+                increment = 2;
+                break;
+            }
+            case 0xdf: {
+                instruction << "RST 3";
+                increment = 1;
+                break;
+            }
+            case 0xe0: {
+                instruction << "RPO";
+                increment = 1;
+                break;
+            }
+            case 0xe1: {
+                instruction << "POP H";
+                increment = 1;
+                break;
+            }
+            case 0xe2: {
+                instruction << "JPO " << twoByteAddress.str();
+                increment = 3;
+                break;
+            }
+            case 0xe3: {
+                instruction << "XTHL";
+                increment = 1;
+                break;
+            }
+            case 0xe4: {
+                instruction << "CPO " << twoByteAddress.str();
+                increment = 3;
+                break;
+            }
+            case 0xe5: {
+                instruction << "PUSH H";
+                increment = 1;
+                break;
+            }
+            case 0xe6: {
+                instruction << "ANDI " << oneByteData.str();
+                increment = 2;
+                break;
+            }
+            case 0xe7: {
+                instruction << "RST 4";
+                increment = 1;
+                break;
+            }
+            case 0xe8: {
+                instruction << "RPE";
+                increment = 1;
+                break;
+            }
+            case 0xe9: {
+                instruction << "PCHL";
+                increment = 1;
+                break;
+            }
+            case 0xea: {
+                instruction << "JPE " << twoByteAddress.str();
+                increment = 3;
+                break;
+            }
+            case 0xeb: {
+                instruction << "XCHG";
+                increment = 1;
+                break;
+            }
+            case 0xec: {
+                instruction << "CPE " << twoByteAddress.str();
+                increment = 3;
+                break;
+            }
+            case 0xed: {
+                instruction << "-";
+                increment = 1;
+                break;
+            }
+            case 0xee: {
+                instruction << "XRI " << oneByteData.str();
+                increment = 2;
+                break;
+            }
+            case 0xef: {
+                instruction << "RST 5";
+                increment = 1;
+                break;
+            }
+            case 0xf0: {
+                instruction << "RP";
+                increment = 1;
+                break;
+            }
+            case 0xf1: {
+                instruction << "POP PSW";
+                increment = 1;
+                break;
+            }
+            case 0xf2: {
+                instruction << "JP " << twoByteAddress.str();
+                increment = 3;
+                break;
+            }
+            case 0xf3: {
+                instruction << "DI";
+                increment = 1;
+                break;
+            }
+            case 0xf4: {
+                instruction << "CP " << twoByteAddress.str();
+                increment = 3;
+                break;
+            }
+            case 0xf5: {
+                instruction << "PUSH PSW";
+                increment = 1;
+                break;
+            }
+            case 0xf6: {
+                instruction << "ORI " << oneByteData.str();
+                increment = 2;
+                break;
+            }
+            case 0xf7: {
+                instruction << "RST 6";
+                increment = 1;
+                break;
+            }
+            case 0xf8: {
+                instruction << "RM";
+                increment = 1;
+                break;
+            }
+            case 0xf9: {
+                instruction << "SPHL";
+                increment = 1;
+                break;
+            }
+            case 0xfa: {
+                instruction << "JM " << twoByteAddress.str();
+                increment = 3;
+                break;
+            }
+            case 0xfb: {
+                instruction << "EI";
+                increment = 1;
+                break;
+            }
+            case 0xfc: {
+                instruction << "CM " << twoByteAddress.str();
+                increment = 3;
+                break;
+            }
+            case 0xfd: {
+                instruction << "-";
+                increment = 1;
+                break;
+            }
+            case 0xfe: {
+                instruction << "CPI " << oneByteData.str();
+                increment = 2;
+                break;
+            }
+            case 0xff: {
+                instruction << "RST 7";
+                increment = 1;
                 break;
             }
             default: i++;
