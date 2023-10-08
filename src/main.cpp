@@ -9,16 +9,21 @@ vector<unsigned int> getFileBuffer( const string& dir ) { //restituisce un vetto
     if ( file.is_open() ) { //se il file è aperto correttamente
         unsigned int c;
 
-        while( (c = (unsigned int) file.get()) != EOF ) {  //finché legge un carattere
+        while( (c = (unsigned int) file.get()) != EOF ) {  //finché non trova la fine del file
             buffer.push_back( c ); //aggiunge il carattere al buffer
         }
     }
+
+    file.close();
 
     return buffer;
 }
 
 int main() {
-    vector<unsigned int> buffer = getFileBuffer( "../data/input/invaders.h" );
+    string filePath;
+    cin >> filePath;
+
+    vector<unsigned int> buffer = getFileBuffer( filePath );
 
     stringstream instruction;
     int increment;
@@ -34,7 +39,7 @@ int main() {
         twoByteData.str(string());
         twoByteAddress.str(string());
 
-        oneByteData << "#0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+1];;
+        oneByteData << "#0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+1];
         twoByteData << "#0x" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
         twoByteAddress << "$" << hex << setw( 2 ) << setfill( '0' ) << buffer[i+2] << setw( 2 ) << setfill( '0' ) << buffer[i+1];
 
@@ -1322,7 +1327,7 @@ int main() {
             default: i++;
         }
 
-        cout << hex << setw( 4 ) << setfill( '0' ) << i << "  " << instruction.str() << endl;
+        cout << hex << setw( 6 ) << setfill( '0' ) << i << "  " << instruction.str() << endl;
         i += increment;
     }
 }
