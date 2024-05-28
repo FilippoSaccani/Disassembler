@@ -12,9 +12,11 @@ vector<unsigned int> getFileBuffer( const string& dir ) { //restituisce un vetto
         while( (c = (unsigned int) file.get()) != EOF ) {  //finché non trova la fine del file
             buffer.push_back( c ); //aggiunge il carattere al buffer
         }
-    }
 
-    file.close();
+        file.close(); //chiude la lettura del file
+    } else {
+        cout << "\nFILE NON TROVATO";
+    }
 
     return buffer;
 }
