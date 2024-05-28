@@ -22,7 +22,7 @@ vector<unsigned int> getFileBuffer( const string& dir ) { //restituisce un vetto
 }
 
 int main() {
-    cout << "Percorso file: ";
+    cout << "Percorso file (../data/<nome>): ";
 
     string filePath;
     cin >> filePath;
